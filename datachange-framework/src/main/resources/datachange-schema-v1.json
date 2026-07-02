@@ -1,0 +1,90 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "DataChange ChangeSet",
+  "description": "Schema for declarative data change sets",
+  "type": "object",
+  "required": ["id", "author", "description", "transactionMode", "changes"],
+  "properties": {
+    "specVersion": {
+      "type": "string",
+      "enum": ["1.0"],
+      "default": "1.0"
+    },
+    "id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "author": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1
+    },
+    "labels": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "transactionMode": {
+      "type": "string",
+      "enum": ["CHANGESET", "PER_CHANGE", "CUSTOM"],
+      "default": "CHANGESET"
+    },
+    "preConditions": {
+      "type": "object",
+      "properties": {
+        "expression": {
+          "type": "string"
+        }
+      }
+    },
+    "changes": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["id", "op", "entity"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "op": {
+            "type": "string",
+            "enum": ["insert", "update", "delete", "upsert", "merge"]
+          },
+          "entity": {
+            "type": "string",
+            "minLength": 1
+          },
+          "where": {
+            "type": "string"
+          },
+          "values": {
+            "type": "object"
+          },
+          "set": {
+            "type": "object"
+          },
+          "saveAs": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}
+

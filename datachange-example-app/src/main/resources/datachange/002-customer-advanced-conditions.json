@@ -1,0 +1,24 @@
+{
+  "specVersion": "1.0",
+  "id": "customer-advanced-conditions",
+  "author": "example",
+  "description": "Demo ChangSet with advanced condition logic",
+  "labels": ["demo"],
+  "tags": ["advanced"],
+  "transactionMode": "CHANGESET",
+  "preConditions": {
+    "expression": "not exists(Customer where email='demo@test.de') and count(Customer) == 0"
+  },
+  "changes": [
+    {
+      "id": "insert-customer-advanced",
+      "op": "insert",
+      "entity": "Customer",
+      "values": {
+        "email": "advanced@test.de",
+        "status": "ACTIVE"
+      }
+    }
+  ]
+}
+

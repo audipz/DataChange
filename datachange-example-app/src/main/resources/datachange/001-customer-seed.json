@@ -1,0 +1,24 @@
+{
+  "specVersion": "1.0",
+  "id": "customer-seed-001",
+  "author": "example",
+  "description": "Seed a demo customer and mark it active",
+  "labels": ["seed"],
+  "tags": ["demo"],
+  "transactionMode": "CHANGESET",
+  "preConditions": {
+    "expression": "not exists(Customer where email='demo@test.de')"
+  },
+  "changes": [
+    {
+      "id": "insert-customer",
+      "op": "insert",
+      "entity": "Customer",
+      "values": {
+        "email": "demo@test.de",
+        "status": "ACTIVE"
+      }
+    }
+  ]
+}
+

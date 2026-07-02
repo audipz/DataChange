@@ -1,0 +1,29 @@
+{
+  "groups": [
+    {
+      "name": "datachange",
+      "type": "de.graube.datachange.framework.config.DataChangeProperties",
+      "sourceType": "de.graube.datachange.framework.config.DataChangeProperties"
+    }
+  ],
+  "properties": [
+    {
+      "name": "datachange.enabled",
+      "type": "java.lang.Boolean",
+      "description": "Enable or disable framework execution.",
+      "defaultValue": true
+    },
+    {
+      "name": "datachange.mode",
+      "type": "de.graube.datachange.framework.config.DataChangeMode",
+      "description": "Framework execution mode.",
+      "defaultValue": "STARTUP"
+    },
+    {
+      "name": "datachange.locations",
+      "type": "java.util.List<java.lang.String>",
+      "description": "Resource patterns where ChangeSet JSON files are loaded from."
+    }
+  ]
+}
+
