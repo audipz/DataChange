@@ -8,12 +8,12 @@
     <parent>
         <groupId>de.graube</groupId>
         <artifactId>datachange-parent</artifactId>
-        <version>0.0.1</version>
+        <version>0.0.3</version>
     </parent>
 
     <groupId>io.github.audipz</groupId>
     <artifactId>datachange-framework</artifactId>
-    <version>0.0.1</version>
+    <version>0.0.3</version>
 
     <name>DataChange Framework</name>
     <description>GitOps data change framework for JPA/Envers compatible updates</description>

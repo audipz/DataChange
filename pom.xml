@@ -13,7 +13,7 @@
 
     <groupId>de.graube</groupId>
     <artifactId>datachange-parent</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.3</version>
     <packaging>pom</packaging>
 
     <name>datachange-parent</name>
@@ -66,7 +66,7 @@
     </distributionManagement>
 
     <properties>
-        <java.version>25</java.version>
+        <java.version>21</java.version>
         <gpg.skip>true</gpg.skip>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
