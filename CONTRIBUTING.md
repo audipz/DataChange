@@ -33,3 +33,11 @@ Bitte verwende aussagekraeftige Commits, z. B.:
 ## Release-Hinweis
 
 Releases werden ueber GitHub Actions und Maven Release / Deploy vorbereitet. Fuer Maven Central werden signierte Artefakte, Source-JARs und Javadocs erwartet.
+
+## Branch- und Release-Policy
+
+- Releases nach Maven Central erfolgen nur ueber Versionstags `v*` und nur, wenn der Tag auf einem Commit aus `main` liegt.
+- Auf `main` selbst wird kein automatischer Release-Deploy ausgefuehrt.
+- Auf Nicht-`main` Branches wird nur gebaut und ein lokales SNAPSHOT (`./mvnw clean install`) erzeugt.
+- CI-Logik liegt in `.github/workflows/release.yml` und `.github/workflows/snapshot.yml`.
+

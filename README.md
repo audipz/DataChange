@@ -253,6 +253,12 @@ Keine zusätzliche Konfiguration nötig!
 
 ## 🤝 Beitragen
 
+### Release-Regeln
+
+- Releases nach Maven Central laufen nur ueber Versionstags `v*`.
+- Ein Release-Tag wird nur akzeptiert, wenn der getaggte Commit aus `main` erreichbar ist.
+- Nicht-`main` Branches fuehren nur Build/Test plus lokales SNAPSHOT-Install aus.
+
 ```bash
 # Fork & Clone
 git clone https://github.com/audipz/Datachange.git
