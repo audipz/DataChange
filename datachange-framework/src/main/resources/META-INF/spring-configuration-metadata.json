@@ -2,8 +2,8 @@
   "groups": [
     {
       "name": "datachange",
-      "type": "de.graube.datachange.framework.config.DataChangeProperties",
-      "sourceType": "de.graube.datachange.framework.config.DataChangeProperties"
+      "type": "io.github.audipz.datachange.framework.config.DataChangeProperties",
+      "sourceType": "io.github.audipz.datachange.framework.config.DataChangeProperties"
     }
   ],
   "properties": [
@@ -15,7 +15,7 @@
     },
     {
       "name": "datachange.mode",
-      "type": "de.graube.datachange.framework.config.DataChangeMode",
+      "type": "io.github.audipz.datachange.framework.config.DataChangeMode",
       "description": "Framework execution mode.",
       "defaultValue": "STARTUP"
     },

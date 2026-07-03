@@ -12,8 +12,7 @@
     </parent>
 
     <groupId>io.github.audipz</groupId>
-    <artifactId>datachange-framework</artifactId>
-    <version>0.0.3</version>
+    <artifactId>datachange-framework-Example</artifactId>
 
     <name>DataChange Framework</name>
     <description>GitOps data change framework for JPA/Envers compatible updates</description>
@@ -36,7 +35,7 @@
     <developers>
         <developer>
             <id>audipz</id>
-            <name>audipz</name>
+            <name>Holger Graube</name>
         </developer>
     </developers>
 
@@ -83,6 +82,16 @@
             <artifactId>h2</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.hibernate.orm</groupId>
+            <artifactId>hibernate-envers</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>de.graube</groupId>
+            <artifactId>datachange-framework</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
     </dependencies>
 
     <build>

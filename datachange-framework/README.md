@@ -27,10 +27,10 @@ Das Modul ist in klare Schichten gegliedert:
 
 Die folgenden Typen sind fuer Anwender vorgesehen:
 
-- `de.graube.datachange.framework.api.DataChangeExecutor`
-- `de.graube.datachange.framework.api.ChangeSetSource`
-- `de.graube.datachange.framework.api.DataChangeExecutionResult`
-- `de.graube.datachange.framework.api.ExecutionContext`
+- `io.github.audipz.datachange.framework.api.DataChangeExecutor`
+- `io.github.audipz.datachange.framework.api.ChangeSetSource`
+- `io.github.audipz.datachange.framework.api.DataChangeExecutionResult`
+- `io.github.audipz.datachange.framework.api.ExecutionContext`
 - `de.graube.datachange.framework.model.*`
 
 ## SPI / Erweiterungspunkte
