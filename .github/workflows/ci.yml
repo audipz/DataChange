@@ -16,14 +16,6 @@ jobs:
           distribution: temurin
           java-version: '21'
           cache: maven
-          server-id: ossrh
-          server-username: OSSRH_USERNAME
-          server-password: OSSRH_PASSWORD
       - name: Build and test
         run: ./mvnw -B clean verify
-      - name: Deploy SNAPSHOT to Maven Central
-        run: ./mvnw -B clean deploy
-        env:
-          OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
-          OSSRH_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
 
