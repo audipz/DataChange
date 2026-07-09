@@ -2,8 +2,9 @@ name: Snapshot Deploy
 
 on:
   push:
-    branches-ignore:
-      - main
+    branches:
+      - '**'
+      - '!main'
 
 jobs:
   snapshot:
