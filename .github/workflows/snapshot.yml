@@ -17,6 +17,12 @@ jobs:
           distribution: temurin
           java-version: '25'
           cache: maven
-      - name: Build and install SNAPSHOT locally
-        run: ./mvnw -B clean install
+          server-id: ossrh
+          server-username: OSSRH_USERNAME
+          server-password: OSSRH_PASSWORD
+      - name: Build and deploy SNAPSHOT
+        run: ./mvnw -B clean deploy
+        env:
+          OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
+          OSSRH_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
 
