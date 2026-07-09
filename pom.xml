@@ -13,7 +13,7 @@
 
     <groupId>de.graube</groupId>
     <artifactId>datachange-parent</artifactId>
-    <version>0.0.3</version>
+    <version>0.0.4</version>
     <packaging>pom</packaging>
 
     <name>datachange-parent</name>
