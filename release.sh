@@ -45,6 +45,13 @@ if git rev-parse "$TAG" >/dev/null 2>&1; then
   exit 1
 fi
 
+# Aktuelle Projektversion prüfen, damit kein No-op-Release entsteht
+CURRENT_VERSION=$(./mvnw -q -N help:evaluate -Dexpression=project.version -DforceStdout | tail -n 1)
+if [ "$CURRENT_VERSION" = "$VERSION" ]; then
+  echo "Fehler: Projektversion ist bereits auf $VERSION gesetzt. Bitte eine neue Release-Version angeben."
+  exit 1
+fi
+
 echo ""
 echo "==> Setze Version auf $VERSION in allen POMs..."
 ./mvnw -B versions:set -DnewVersion="$VERSION" -DgenerateBackupPoms=false
