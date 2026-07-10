@@ -35,23 +35,23 @@ flowchart TD
 ## Layers
 
 ### Public API
-- `de.graube.datachange.framework.api`
-- `de.graube.datachange.framework.model`
-- `de.graube.datachange.framework.spi`
+- `io.github.audipz.datachange.framework.api`
+- `io.github.audipz.datachange.framework.model`
+- `io.github.audipz.datachange.framework.spi`
 
 ### Spring Integration
-- `de.graube.datachange.framework.boot`
-- `de.graube.datachange.framework.rest`
-- `de.graube.datachange.framework.config`
+- `io.github.audipz.datachange.framework.boot`
+- `io.github.audipz.datachange.framework.rest`
+- `io.github.audipz.datachange.framework.config`
 
 ### Internal Implementation
-- `de.graube.datachange.framework.engine`
-- `de.graube.datachange.framework.parser`
-- `de.graube.datachange.framework.loader`
-- `de.graube.datachange.framework.condition`
-- `de.graube.datachange.framework.validation`
-- `de.graube.datachange.framework.log`
-- `de.graube.datachange.framework.internal`
+- `io.github.audipz.datachange.framework.engine`
+- `io.github.audipz.datachange.framework.parser`
+- `io.github.audipz.datachange.framework.loader`
+- `io.github.audipz.datachange.framework.condition`
+- `io.github.audipz.datachange.framework.validation`
+- `io.github.audipz.datachange.framework.log`
+- `io.github.audipz.datachange.framework.internal`
 
 ## Extension Points
 

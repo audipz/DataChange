@@ -31,7 +31,7 @@ Die folgenden Typen sind fuer Anwender vorgesehen:
 - `io.github.audipz.datachange.framework.api.ChangeSetSource`
 - `io.github.audipz.datachange.framework.api.DataChangeExecutionResult`
 - `io.github.audipz.datachange.framework.api.ExecutionContext`
-- `de.graube.datachange.framework.model.*`
+- `io.github.audipz.datachange.framework.model.*`
 
 ## SPI / Erweiterungspunkte
 

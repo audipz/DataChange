@@ -193,7 +193,7 @@ Für sehr große Datenmengen: Mehrere kleine ChangeSets statt eines großen.
 ```yaml
 logging:
   level:
-    de.graube.datachange: DEBUG
+    io.github.audipz.datachange: DEBUG
     org.hibernate: DEBUG
 ```
 

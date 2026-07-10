@@ -50,7 +50,7 @@ Hibernate + Envers (Datenbankänderung + Audit)
 **`pom.xml`:**
 ```xml
 <dependency>
-    <groupId>de.graube</groupId>
+    <groupId>io.github.audipz</groupId>
     <artifactId>datachange-framework</artifactId>
     <version>0.0.1-SNAPSHOT</version>
 </dependency>
@@ -288,7 +288,7 @@ Customer { id=1, email="alice@x.de", status=ACTIVE }
 **1. Dependency hinzufügen**
 ```xml
 <dependency>
-    <groupId>de.graube</groupId>
+    <groupId>io.github.audipz</groupId>
     <artifactId>datachange-framework</artifactId>
     <version>0.0.1-SNAPSHOT</version>
 </dependency>
@@ -885,7 +885,7 @@ Verhindert:
 ```yaml
 logging:
   level:
-    de.graube.datachange: DEBUG
+    io.github.audipz.datachange: DEBUG
 ```
 
 Logs zeigen:

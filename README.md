@@ -36,7 +36,7 @@ Ein generisches Framework zur Verwaltung von **Datenänderungen** (nicht Schema-
 
 ```xml
 <dependency>
-    <groupId>de.graube</groupId>
+    <groupId>io.github.audipz</groupId>
     <artifactId>datachange-framework</artifactId>
     <version>0.0.1-SNAPSHOT</version>
 </dependency>

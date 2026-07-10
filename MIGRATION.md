@@ -17,7 +17,7 @@ Sie verwenden Liquibase für Schema-Migrationen und möchten auch fachliche Date
 
 <!-- DataChange (für Daten) -->
 <dependency>
-    <groupId>de.graube</groupId>
+    <groupId>io.github.audipz</groupId>
     <artifactId>datachange-framework</artifactId>
     <version>0.0.1-SNAPSHOT</version>
 </dependency>

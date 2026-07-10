@@ -7,7 +7,7 @@
 **`pom.xml`:**
 ```xml
 <dependency>
-    <groupId>de.graube</groupId>
+    <groupId>io.github.audipz</groupId>
     <artifactId>datachange-framework</artifactId>
     <version>0.0.1-SNAPSHOT</version>
 </dependency>
@@ -271,7 +271,7 @@ datachange/003-cleanup.json       ← Dann das
 # In application.yaml:
 logging:
   level:
-    de.graube.datachange: DEBUG
+    io.github.audipz.datachange: DEBUG
 ```
 
 ---
