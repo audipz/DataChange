@@ -2,7 +2,8 @@
 set -euo pipefail
 
 # ---------------------------------------------------------------------------
-# release.sh – Setzt Version in allen POMs, taggt und pusht alles.
+# release.sh – Setzt Version in allen POMs, erstellt einen Release-Commit,
+# taggt diesen Commit und pusht alles.
 # Verwendung:  ./release.sh 1.2.3
 # ---------------------------------------------------------------------------
 
@@ -48,11 +49,6 @@ echo ""
 echo "==> Setze Version auf $VERSION in allen POMs..."
 ./mvnw -B versions:set -DnewVersion="$VERSION" -DgenerateBackupPoms=false
 
-# Nächste SNAPSHOT-Version berechnen
-IFS='.' read -r MAJOR MINOR PATCH <<< "$VERSION"
-NEXT_PATCH=$((PATCH + 1))
-NEXT_SNAPSHOT="${MAJOR}.${MINOR}.${NEXT_PATCH}-SNAPSHOT"
-
 echo "==> Baue und teste..."
 ./mvnw -B clean verify
 
@@ -63,10 +59,6 @@ git commit -m "release: $VERSION"
 echo "==> Erstelle Tag $TAG..."
 git tag "$TAG"
 
-echo "==> Setze nächste SNAPSHOT-Version $NEXT_SNAPSHOT..."
-./mvnw -B versions:set -DnewVersion="$NEXT_SNAPSHOT" -DgenerateBackupPoms=false
-git add -A
-git commit -m "chore: prepare next development version $NEXT_SNAPSHOT"
 
 echo "==> Pushe main und Tag zu origin..."
 git push origin main
