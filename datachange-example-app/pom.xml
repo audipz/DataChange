@@ -13,6 +13,10 @@
 
     <artifactId>datachange-example-app</artifactId>
 
+    <properties>
+        <maven.deploy.skip>true</maven.deploy.skip>
+    </properties>
+
     <name>DataChange Framework</name>
     <description>GitOps data change framework for JPA/Envers compatible updates</description>
     <url>https://github.com/audipz/DataChange</url>
