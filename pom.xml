@@ -63,10 +63,7 @@
         <central-publishing.version>0.9.0</central-publishing.version>
     </properties>
 
-    <modules>
-        <module>datachange-framework</module>
-        <module>datachange-example-app</module>
-    </modules>
+
 
     <build>
         <plugins>
@@ -105,10 +102,20 @@
 
         </plugins>
     </build>
-
     <profiles>
         <profile>
+            <id>full-build</id>
+            <modules>
+                <module>datachange-framework</module>
+                <module>datachange-example-app</module>
+            </modules>
+        </profile>
+
+        <profile>
             <id>release</id>
+            <modules>
+                <module>datachange-framework</module>
+            </modules>
             <properties>
                 <gpg.skip>false</gpg.skip>
             </properties>
