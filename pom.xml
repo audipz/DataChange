@@ -12,7 +12,7 @@
         <relativePath/>
     </parent>
 
-    <groupId>de.graube</groupId>
+    <groupId>io.github.audipz</groupId>
     <artifactId>datachange-parent</artifactId>
     <version>0.0.8</version>
     <packaging>pom</packaging>

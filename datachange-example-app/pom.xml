@@ -6,13 +6,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>de.graube</groupId>
+        <groupId>io.github.audipz</groupId>
         <artifactId>datachange-parent</artifactId>
         <version>0.0.8</version>
     </parent>
 
-    <groupId>io.github.audipz</groupId>
-    <artifactId>datachange-framework-Example</artifactId>
+    <artifactId>datachange-example-app</artifactId>
 
     <name>DataChange Framework</name>
     <description>GitOps data change framework for JPA/Envers compatible updates</description>
@@ -87,67 +86,11 @@
             <artifactId>hibernate-envers</artifactId>
         </dependency>
         <dependency>
-            <groupId>de.graube</groupId>
+            <groupId>io.github.audipz</groupId>
             <artifactId>datachange-framework</artifactId>
             <version>${project.version}</version>
         </dependency>
 
     </dependencies>
-
-    <build>
-        <plugins>
-
-            <!-- Sources -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-source-plugin</artifactId>
-                <version>3.3.1</version>
-                <executions>
-                    <execution>
-                        <id>attach-sources</id>
-                        <goals>
-                            <goal>jar-no-fork</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-
-            <!-- Javadoc -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <version>3.11.2</version>
-                <configuration>
-                    <doclint>none</doclint>
-                    <failOnError>true</failOnError>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>attach-javadocs</id>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-
-            <!-- GPG Signing (required for Maven Central) -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-gpg-plugin</artifactId>
-                <version>3.2.8</version>
-                <executions>
-                    <execution>
-                        <id>sign-artifacts</id>
-                        <phase>verify</phase>
-                        <goals>
-                            <goal>sign</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-
-        </plugins>
-    </build>
 
 </project>

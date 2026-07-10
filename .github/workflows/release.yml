@@ -32,6 +32,12 @@ jobs:
           gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
           gpg-passphrase: ${{ secrets.GPG_PASSPHRASE }}
 
+      - name: Configure GPG for CI
+        run: |
+          echo "pinentry-mode loopback" >> ~/.gnupg/gpg.conf
+          echo "allow-loopback-pinentry" >> ~/.gnupg/gpg-agent.conf
+          gpgconf --kill gpg-agent
+
       - name: Create Maven settings.xml
         run: |
           mkdir -p ~/.m2
@@ -46,5 +52,10 @@ jobs:
           </servers>
           </settings>
           EOF
+
       - name: Publish to Maven Central
         run: ./mvnw -B -Prelease clean deploy
+        env:
+          MAVEN_CENTRAL_TOKEN: ${{ secrets.MAVEN_CENTRAL_TOKEN }}
+          MAVEN_CENTRAL_USERNAME: ${{ secrets.MAVEN_CENTRAL_USERNAME }}
+          MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}

@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>de.graube</groupId>
+        <groupId>io.github.audipz</groupId>
         <artifactId>datachange-parent</artifactId>
         <version>0.0.8</version>
     </parent>
@@ -90,6 +90,11 @@
                 <version>3.2.8</version>
                 <configuration>
                     <skip>${gpg.skip}</skip>
+                    <passphrase>${env.MAVEN_GPG_PASSPHRASE}</passphrase>
+                    <gpgArguments>
+                        <arg>--pinentry-mode</arg>
+                        <arg>loopback</arg>
+                    </gpgArguments>
                 </configuration>
                 <executions>
                     <execution>
