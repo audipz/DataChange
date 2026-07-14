@@ -374,10 +374,50 @@ Empfehlung: Nutze `CHANGESET` (Alles-oder-Nichts).
 
 ---
 
+### F: Wie modelliere ich `@OneToOne`, `@OneToMany` und `@ManyToOne` in ChangeSets?
+
+**A:** Setze Beziehungen ueber die **Owning Side** und nutze `saveAs`/`ref()` fuer Abhaengigkeiten.
+
+```json
+{
+  "changes": [
+    {
+      "id": "insert-person",
+      "op": "insert",
+      "entity": "Person",
+      "values": { "firstName": "Max", "lastName": "Mustermann", "age": 34 },
+      "saveAs": "person"
+    },
+    {
+      "id": "insert-address",
+      "op": "insert",
+      "entity": "Address",
+      "values": {
+        "street": "Hauptstrasse 1",
+        "city": "Hamburg",
+        "person": "${ref('person')}"
+      }
+    }
+  ]
+}
+```
+
+Praxisregeln:
+- Bei `@OneToMany` wird die Relation meist ueber die Child-Entity (`@ManyToOne` + `@JoinColumn`) gesetzt.
+- Bei `@OneToOne` wird die Seite mit `@JoinColumn` aktualisiert.
+- Re-Assign ist ein normales `update` auf dem Relationsfeld, z. B. `"person": "${ref('targetPerson')}"`.
+- Verwende in Conditions moeglichst einfache Ausdruecke; komplexe `and`-Kombinationen direkt im `where` koennen parserabhaengig sein.
+
+Typische Fehler:
+- Nur die inverse Collection (`Person.addresses`) setzen, aber nicht die Owning Side (`Address.person`).
+- Referenzen auf IDs/Felder annehmen, obwohl `saveAs` ein Objekt speichert (besser: direkt als Relationsobjekt verwenden).
+- Reihenfolge missachten (Child einfuegen, bevor Parent im Context ist).
+
+---
+
 ## 📞 Support
 
 **Dokumentation:** [USAGE.md](USAGE.md)
 **Quickstart:** [QUICKSTART.md](QUICKSTART.md)
 **REST API:** [API.md](API.md)
 **Spezifikation:** [SPEC.md](SPEC.md)
-

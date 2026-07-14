@@ -279,6 +279,11 @@ Customer { id=1, email="alice@x.de", status=ACTIVE }
 }
 ```
 
+**Wichtig bei Beziehungen:**
+- `saveAs` speichert das Ergebnisobjekt der Operation im Context.
+- Fuer JPA-Relationen (`@ManyToOne`, `@OneToOne`) setzt man in `values`/`set` typischerweise die Relation selbst, z. B. `"person": "${ref('person')}"`.
+- `@OneToMany` wird in der Regel ueber die Owning Side (`@ManyToOne` mit `@JoinColumn`) gepflegt, also ueber Inserts/Updates auf der Child-Entity.
+
 ---
 
 ## Installation & Konfiguration
@@ -657,6 +662,63 @@ Beim 2. Start: ✗ Precondition nicht erfüllt (2 Customers vorhanden)
 }
 ```
 
+### Beispiel 3b: Komplexe Beziehungen (OneToOne + OneToMany + ManyToOne)
+
+**Datei:** `datachange/003-person-relationships.json`
+```json
+{
+  "specVersion": "1.0",
+  "id": "person-relationships-003",
+  "author": "example",
+  "description": "Create Person with OneToOne profile and OneToMany dependents",
+  "transactionMode": "CHANGESET",
+  "changes": [
+    {
+      "id": "insert-person",
+      "op": "insert",
+      "entity": "Person",
+      "values": {
+        "firstName": "Max",
+        "lastName": "Mustermann",
+        "age": 34
+      },
+      "saveAs": "person"
+    },
+    {
+      "id": "insert-profile",
+      "op": "insert",
+      "entity": "PersonProfile",
+      "values": {
+        "preferredLanguage": "de",
+        "person": "${ref('person')}"
+      }
+    },
+    {
+      "id": "insert-address-home",
+      "op": "insert",
+      "entity": "Address",
+      "values": {
+        "street": "Hauptstrasse 1",
+        "city": "Hamburg",
+        "person": "${ref('person')}"
+      }
+    },
+    {
+      "id": "insert-bank-main",
+      "op": "insert",
+      "entity": "BankAccount",
+      "values": {
+        "iban": "DE02120300000000202051",
+        "bic": "BYLADEM1001",
+        "person": "${ref('person')}"
+      }
+    }
+  ]
+}
+```
+
+**Hinweis:** Bei `@OneToMany` wird nicht zwingend die Collection am Parent gesetzt. Stattdessen wird die Relation ueber das Child-Feld (z. B. `Address.person`) gesetzt.
+
 ---
 
 ### Beispiel 4: Bedingte Datenlöschung
@@ -681,6 +743,67 @@ Beim 2. Start: ✗ Precondition nicht erfüllt (2 Customers vorhanden)
   ]
 }
 ```
+
+---
+
+### Beispiel 5: CRUD-Operationen kompakt
+
+**Datei:** `datachange/005-customer-crud.json`
+```json
+{
+  "specVersion": "1.0",
+  "id": "customer-crud-005",
+  "author": "example",
+  "description": "CRUD demo: create, read (precondition), update, delete and upsert on Customer",
+  "transactionMode": "CHANGESET",
+  "preConditions": {
+    "expression": "exists(Customer where email='demo@test.de')"
+  },
+  "changes": [
+    {
+      "id": "create-update-target",
+      "op": "insert",
+      "entity": "Customer",
+      "values": {
+        "email": "crud-create@test.de",
+        "status": "ACTIVE"
+      }
+    },
+    {
+      "id": "create-delete-target",
+      "op": "insert",
+      "entity": "Customer",
+      "values": {
+        "email": "crud-delete@test.de",
+        "status": "ACTIVE"
+      }
+    },
+    {
+      "id": "update-created-customer",
+      "op": "update",
+      "entity": "Customer",
+      "where": "email == 'crud-create@test.de'",
+      "set": {
+        "status": "INACTIVE"
+      }
+    },
+    {
+      "id": "delete-customer",
+      "op": "delete",
+      "entity": "Customer",
+      "where": "email == 'crud-delete@test.de'"
+    }
+  ]
+}
+```
+
+CRUD-Mapping im Framework:
+- **Create**: `insert`
+- **Read**: `preConditions` (`exists(...)`, `count(...)`) oder `where`-Filter zur Zielauswahl
+- **Update**: `update`
+- **Delete**: `delete`
+
+Hinweis: `upsert` ist zusaetzlich verfuegbar und kombiniert Create/Update in einer Operation.
 
 ---
 
@@ -952,4 +1075,3 @@ Führt noch-nicht-ausgeführte ChangeSets aus
 3. ChangeSet JSON erstellen
 4. Precondition definieren
 5. App starten → erledigt! ✅
-

@@ -1,0 +1,58 @@
+{
+  "specVersion": "1.0",
+  "id": "customer-crud-005",
+  "author": "example",
+  "description": "CRUD demo: create, read (precondition), update, delete and upsert on Customer",
+  "labels": ["demo", "crud"],
+  "tags": ["create", "read", "update", "delete"],
+  "transactionMode": "CHANGESET",
+  "preConditions": {
+    "expression": "exists(Customer where email='demo@test.de')"
+  },
+  "changes": [
+    {
+      "id": "create-update-target",
+      "op": "insert",
+      "entity": "Customer",
+      "values": {
+        "email": "crud-create@test.de",
+        "status": "ACTIVE"
+      }
+    },
+    {
+      "id": "create-delete-target",
+      "op": "insert",
+      "entity": "Customer",
+      "values": {
+        "email": "crud-delete@test.de",
+        "status": "ACTIVE"
+      }
+    },
+    {
+      "id": "update-created-customer",
+      "op": "update",
+      "entity": "Customer",
+      "where": "email == 'crud-create@test.de'",
+      "set": {
+        "status": "INACTIVE"
+      }
+    },
+    {
+      "id": "upsert-customer",
+      "op": "upsert",
+      "entity": "Customer",
+      "where": "email == 'crud-upsert@test.de'",
+      "values": {
+        "email": "crud-upsert@test.de",
+        "status": "ACTIVE"
+      }
+    },
+    {
+      "id": "delete-customer",
+      "op": "delete",
+      "entity": "Customer",
+      "where": "email == 'crud-delete@test.de'"
+    }
+  ]
+}
+

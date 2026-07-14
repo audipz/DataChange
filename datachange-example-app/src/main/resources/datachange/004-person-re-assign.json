@@ -1,0 +1,53 @@
+{
+  "specVersion": "1.0",
+  "id": "person-re-assign-004",
+  "author": "example",
+  "description": "Re-assign existing relations from one Person to another",
+  "labels": ["demo", "relations"],
+  "tags": ["re-assign", "one-to-one", "many-to-one"],
+  "transactionMode": "CHANGESET",
+  "preConditions": {
+    "expression": "exists(Person where firstName='Max')"
+  },
+  "changes": [
+    {
+      "id": "insert-target-person",
+      "op": "insert",
+      "entity": "Person",
+      "values": {
+        "firstName": "Erika",
+        "lastName": "Musterfrau",
+        "age": 31
+      },
+      "saveAs": "targetPerson"
+    },
+    {
+      "id": "reassign-profile",
+      "op": "update",
+      "entity": "PersonProfile",
+      "where": "preferredLanguage == 'de'",
+      "set": {
+        "person": "${ref('targetPerson')}"
+      }
+    },
+    {
+      "id": "reassign-office-address",
+      "op": "update",
+      "entity": "Address",
+      "where": "street == 'Kontorweg 10'",
+      "set": {
+        "person": "${ref('targetPerson')}"
+      }
+    },
+    {
+      "id": "reassign-main-account",
+      "op": "update",
+      "entity": "BankAccount",
+      "where": "iban == 'DE02120300000000202051'",
+      "set": {
+        "person": "${ref('targetPerson')}"
+      }
+    }
+  ]
+}
+
