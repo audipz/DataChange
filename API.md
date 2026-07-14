@@ -49,6 +49,8 @@ curl http://localhost:8080/datachange/changesets
 
 **POST /execute?id={changeSetId}**
 
+Die Antwort enthält direkt das Ausführungsergebnis des manuellen Aufrufs als JSON-Body.
+
 ```bash
 curl -X POST http://localhost:8080/datachange/execute?id=seed-customers
 ```
@@ -70,6 +72,37 @@ curl -X POST http://localhost:8080/datachange/execute?id=seed-customers
 - `SUCCESS` – Erfolgreich ausgeführt
 - `SKIPPED` – Vorbedingung nicht erfüllt oder bereits ausgeführt
 - `FAILED` – Fehler bei Ausführung
+
+---
+
+### 3. Ergebnis eines ChangeSets abfragen
+
+**GET /audit/changeset/{id}**
+
+Dieser Endpunkt liefert das auditierte Ergebnis eines bereits deployten ChangeSets. Es können keine neuen Änderungen per Request übermittelt werden.
+
+```bash
+curl http://localhost:8080/datachange/audit/changeset/seed-customers
+```
+
+**Response (200 OK):**
+```json
+{
+  "id": "seed-customers",
+  "checksum": "abc123",
+  "author": "dev-team",
+  "status": "SUCCESS",
+  "executedAt": "2026-07-14T08:00:00Z",
+  "durationMs": 234,
+  "inserts": 5,
+  "updates": 0,
+  "deletes": 0,
+  "errorMessage": null,
+  "applicationVersion": "0.0.12",
+  "environment": "prod",
+  "hostname": "app-01"
+}
+```
 
 ---
 
@@ -126,6 +159,14 @@ for cs in "${CHANGESETS[@]}"; do
 done
 
 echo "All changesets processed successfully!"
+```
+
+### Workflow 4: Ergebnis eines deployten ChangeSets abrufen
+
+```bash
+curl http://localhost:8080/datachange/audit/changeset/seed-customers
+
+# Read-only, nachvollziehbar und vollständig auditierbar.
 ```
 
 ---

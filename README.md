@@ -198,7 +198,12 @@ curl http://localhost:8080/datachange/changesets
 
 # ChangeSet ausführen
 curl -X POST http://localhost:8080/datachange/execute?id=seed-customers
+
+# Ergebnis abrufen
+curl http://localhost:8080/datachange/audit/changeset/seed-customers
 ```
+
+`execute` bleibt idempotent und liefert bei einer erneuten Ausführung desselben ChangeSets `SKIPPED`. Das Ausführungsergebnis ist über den Audit-Endpunkt nachvollziehbar.
 
 ## 🧪 Tests & Demo
 

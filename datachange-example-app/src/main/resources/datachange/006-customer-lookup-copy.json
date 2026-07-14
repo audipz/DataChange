@@ -1,0 +1,24 @@
+{
+  "specVersion": "1.0",
+  "id": "customer-lookup-copy-006",
+  "author": "example",
+  "description": "Copy a field value from another entity record via lookup()",
+  "labels": ["demo", "lookup"],
+  "tags": ["cross-entity", "value-resolution"],
+  "transactionMode": "CHANGESET",
+  "preConditions": {
+    "expression": "exists(Customer where email='crud-create@test.de')"
+  },
+  "changes": [
+    {
+      "id": "copy-status-from-other-customer",
+      "op": "update",
+      "entity": "Customer",
+      "where": "email == 'demo@test.de'",
+      "set": {
+        "status": "${lookup('Customer','email','crud-create@test.de','status')}"
+      }
+    }
+  ]
+}
+

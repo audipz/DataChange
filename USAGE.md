@@ -279,6 +279,33 @@ Customer { id=1, email="alice@x.de", status=ACTIVE }
 }
 ```
 
+**Wert aus anderer Entity lesen (`lookup`)**
+```json
+{
+  "set": {
+    "status": "${lookup('Customer','email','source@test.de','status')}"
+  }
+}
+```
+
+Lookup-Syntax:
+- `${lookup('Entity','whereField','whereValue','selectField')}`
+- `${lookup('Entity',"<whereExpression>",'selectField')}` fuer komplexe Bedingungen
+- Das Lookup muss genau **einen** Datensatz liefern.
+- Bei 0 oder >1 Treffern bricht die Operation mit Fehler ab.
+- `whereValue` kann als String (`'abc'`) oder als Literal (`31`, `true`, `false`, `null`) angegeben werden.
+
+**Beispiele fuer whereValue:**
+- `${lookup('Customer','email','source@test.de','status')}`
+- `${lookup('Person','age',31,'lastName')}`
+- `${lookup('Person',"age >= 18 and age <= 65 and (active == true or vip == true)",'id')}`
+
+Unterstuetzte Operatoren in `whereExpression`:
+- Vergleich: `==`, `!=`, `>`, `>=`, `<`, `<=`
+- Mengenoperatoren: `in`, `not in`
+- Logik: `and`, `or`, `not`, Klammern `(...)`
+- Werte: String, Number, Boolean, `null`
+
 **Wichtig bei Beziehungen:**
 - `saveAs` speichert das Ergebnisobjekt der Operation im Context.
 - Fuer JPA-Relationen (`@ManyToOne`, `@OneToOne`) setzt man in `values`/`set` typischerweise die Relation selbst, z. B. `"person": "${ref('person')}"`.
@@ -423,6 +450,9 @@ curl http://localhost:8080/datachange/changesets
 
 # Spezifisches ChangeSet ausführen
 curl -X POST http://localhost:8080/datachange/execute?id=seed-customers-001
+
+# Ergebnis eines deployten ChangeSets abrufen
+curl http://localhost:8080/datachange/audit/changeset/seed-customers-001
 ```
 
 **Response:**
@@ -437,6 +467,10 @@ curl -X POST http://localhost:8080/datachange/execute?id=seed-customers-001
   "message": "executed"
 }
 ```
+
+Die Antwort des `execute`-Endpunkts wird direkt als REST-Response zurückgegeben, sodass Sie den Status und die Zählwerte sofort sehen.
+
+**Hinweis:** `execute` ist idempotent. Derselbe ChangeSet-Inhalt wird nach der ersten erfolgreichen Ausführung als `SKIPPED` behandelt. Das Ergebnis wird auditierbar gespeichert und kann über `GET /datachange/audit/changeset/{id}` abgefragt werden.
 
 ---
 
@@ -807,6 +841,128 @@ Hinweis: `upsert` ist zusaetzlich verfuegbar und kombiniert Create/Update in ein
 
 ---
 
+### Beispiel 6: Feldwert aus anderer Entity uebernehmen (`lookup`)
+
+**Datei:** `datachange/006-customer-lookup-copy.json`
+```json
+{
+  "specVersion": "1.0",
+  "id": "customer-lookup-copy-006",
+  "author": "example",
+  "description": "Copy a field value from another entity record via lookup()",
+  "transactionMode": "CHANGESET",
+  "preConditions": {
+    "expression": "exists(Customer where email='crud-create@test.de')"
+  },
+  "changes": [
+    {
+      "id": "copy-status-from-other-customer",
+      "op": "update",
+      "entity": "Customer",
+      "where": "email == 'demo@test.de'",
+      "set": {
+        "status": "${lookup('Customer','email','crud-create@test.de','status')}"
+      }
+    }
+  ]
+}
+```
+
+---
+
+### Beispiel 7: `lookup` mit numerischem Filter
+
+**Datei:** `datachange/007-person-lookup-numeric.json`
+```json
+{
+  "specVersion": "1.0",
+  "id": "person-lookup-numeric-007",
+  "author": "example",
+  "description": "Copy a field using lookup() with numeric where value",
+  "transactionMode": "CHANGESET",
+  "preConditions": {
+    "expression": "exists(Person where firstName='Erika')"
+  },
+  "changes": [
+    {
+      "id": "copy-lastname-by-age",
+      "op": "update",
+      "entity": "Person",
+      "where": "firstName == 'Max'",
+      "set": {
+        "lastName": "${lookup('Person','age',31,'lastName')}"
+      }
+    }
+  ]
+}
+```
+
+---
+
+### Beispiel 8: `lookup` mit beliebig komplexer Bedingung
+
+**Datei:** `datachange/008-person-lookup-complex.json`
+```json
+{
+  "specVersion": "1.0",
+  "id": "person-lookup-complex-008",
+  "author": "example",
+  "description": "Use lookup() with an arbitrarily complex where expression",
+  "transactionMode": "CHANGESET",
+  "preConditions": {
+    "expression": "exists(Person where firstName='Erika')"
+  },
+  "changes": [
+    {
+      "id": "copy-age-from-complex-lookup",
+      "op": "update",
+      "entity": "Person",
+      "where": "firstName == 'Max'",
+      "set": {
+        "age": "${lookup('Person',\"firstName == 'Erika' and age >= 30 and age <= 40 and (lastName != null)\",'age')}"
+      }
+    }
+  ]
+}
+```
+
+---
+
+### Beispiel 9: `where` mit `in` und `not in`
+
+**Datei:** `datachange/009-customer-in-operators.json`
+```json
+{
+  "specVersion": "1.0",
+  "id": "customer-in-operators-009",
+  "author": "example",
+  "description": "Demonstrate in and not in operators in complex where expressions",
+  "transactionMode": "CHANGESET",
+  "changes": [
+    {
+      "id": "update-in-list",
+      "op": "update",
+      "entity": "Customer",
+      "where": "email in ('in-a@test.de', 'in-b@test.de')",
+      "set": {
+        "status": "INACTIVE"
+      }
+    },
+    {
+      "id": "update-not-in-list-with-extra-condition",
+      "op": "update",
+      "entity": "Customer",
+      "where": "email not in ('in-a@test.de', 'in-b@test.de') and email == 'in-c@test.de'",
+      "set": {
+        "status": "INACTIVE"
+      }
+    }
+  ]
+}
+```
+
+---
+
 ## Troubleshooting
 
 ### Problem: ChangeSet wird nicht ausgeführt
@@ -846,6 +1002,9 @@ datachange:
 
 # → Manuell über REST Endpoint ausführen:
 curl -X POST http://localhost:8080/datachange/execute?id=your-changeset-id
+
+# → Ergebnis des deployten ChangeSets lesen:
+curl http://localhost:8080/datachange/audit/changeset/your-changeset-id
 ```
 
 ---

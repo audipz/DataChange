@@ -118,6 +118,24 @@ SELECT * FROM DATA_CHANGELOG WHERE id='seed';
 -- id='seed', status='SUCCESS', checksum=<hash>
 ```
 
+### F: Wie bekomme ich das Ergebnis eines deployten ChangeSets?
+
+**A:** Über den Audit-Endpunkt `GET /datachange/audit/changeset/{id}`. Dort sehen Sie Status, Laufzeit, Inserts/Updates/Deletes und Fehlerdetails.
+
+```bash
+curl http://localhost:8080/datachange/audit/changeset/seed-customers
+```
+
+Der Request übermittelt keine Änderungen. Er liest nur den auditierten Ausführungsstatus eines bereits deployten ChangeSets.
+
+### F: Wie führe ich dasselbe ChangeSet erneut aus?
+
+**A:** Ein ChangeSet mit identischer `id` und identischem Inhalt wird beim zweiten Lauf als `SKIPPED` behandelt. Wenn Sie es erneut ausführen möchten, müssen Sie die Definition ändern, z. B.:
+
+1. die ChangeSet-ID anpassen,
+2. den Inhalt/Checksum ändern, oder
+3. den Changelog-Eintrag gezielt entfernen.
+
 ---
 
 ### F: Kann ich ein ChangeSet "rückgängig machen"?
@@ -412,6 +430,31 @@ Typische Fehler:
 - Nur die inverse Collection (`Person.addresses`) setzen, aber nicht die Owning Side (`Address.person`).
 - Referenzen auf IDs/Felder annehmen, obwohl `saveAs` ein Objekt speichert (besser: direkt als Relationsobjekt verwenden).
 - Reihenfolge missachten (Child einfuegen, bevor Parent im Context ist).
+
+---
+
+### F: Kann ich einen Feldwert aus einer anderen Entity uebernehmen?
+
+**A:** Ja, mit `lookup(...)`.
+
+```json
+{
+  "set": {
+    "status": "${lookup('Customer','email','source@test.de','status')}"
+  }
+}
+```
+
+Regeln:
+- Syntax: `${lookup('Entity','whereField','whereValue','selectField')}`
+- Erweiterte Syntax: `${lookup('Entity',"<whereExpression>",'selectField')}`
+- `whereValue` unterstuetzt Strings (`'abc'`) und Literale (`31`, `true`, `false`, `null`)
+- `whereExpression` kann beliebig viele Bedingungen enthalten (mit `and`, `or`, `not`, Klammern)
+- Auch Mengenoperatoren sind moeglich: `in (...)`, `not in (...)`
+- Das Lookup muss genau **einen** Treffer liefern
+- Bei 0 oder mehreren Treffern wird die Operation mit Fehler beendet
+
+Hinweis: Fuer Relationen (z. B. `person`) bleibt `saveAs` + `${ref('...')}` der bevorzugte Weg.
 
 ---
 

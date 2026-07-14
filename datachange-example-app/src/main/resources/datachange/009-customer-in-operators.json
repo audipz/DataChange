@@ -1,0 +1,60 @@
+{
+  "specVersion": "1.0",
+  "id": "customer-in-operators-009",
+  "author": "example",
+  "description": "Demonstrate in and not in operators in complex where expressions",
+  "labels": ["demo", "where"],
+  "tags": ["in", "not-in", "complex"],
+  "transactionMode": "CHANGESET",
+  "preConditions": {
+    "expression": "exists(Customer where email='demo@test.de')"
+  },
+  "changes": [
+    {
+      "id": "insert-in-a",
+      "op": "insert",
+      "entity": "Customer",
+      "values": {
+        "email": "in-a@test.de",
+        "status": "ACTIVE"
+      }
+    },
+    {
+      "id": "insert-in-b",
+      "op": "insert",
+      "entity": "Customer",
+      "values": {
+        "email": "in-b@test.de",
+        "status": "ACTIVE"
+      }
+    },
+    {
+      "id": "insert-in-c",
+      "op": "insert",
+      "entity": "Customer",
+      "values": {
+        "email": "in-c@test.de",
+        "status": "ACTIVE"
+      }
+    },
+    {
+      "id": "update-in-list",
+      "op": "update",
+      "entity": "Customer",
+      "where": "email in ('in-a@test.de', 'in-b@test.de')",
+      "set": {
+        "status": "INACTIVE"
+      }
+    },
+    {
+      "id": "update-not-in-list-with-extra-condition",
+      "op": "update",
+      "entity": "Customer",
+      "where": "email not in ('in-a@test.de', 'in-b@test.de') and email == 'in-c@test.de'",
+      "set": {
+        "status": "INACTIVE"
+      }
+    }
+  ]
+}
+

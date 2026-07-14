@@ -44,6 +44,7 @@ public class DataChangeController {
         return executor.execute(changeSet);
     }
 
+
     public record DataChangeMetaDto(String id, String author, String description) {
     }
 }

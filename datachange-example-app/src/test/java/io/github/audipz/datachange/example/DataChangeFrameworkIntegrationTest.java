@@ -80,5 +80,37 @@ class DataChangeFrameworkIntegrationTest {
 
         Customer upserted = customerRepository.findByEmail("crud-upsert@test.de").orElseThrow();
         assertThat(upserted.getStatus()).isEqualTo(CustomerStatus.ACTIVE);
+
+        Customer copiedViaLookup = customerRepository.findByEmail("demo@test.de").orElseThrow();
+        assertThat(copiedViaLookup.getStatus()).isEqualTo(CustomerStatus.INACTIVE);
+    }
+
+    @Test
+    void numericLookupCanFilterByNumberLiteral() {
+        String maxLastName = entityManager.createQuery(
+                        "select p.lastName from Person p where p.firstName = :firstName",
+                        String.class)
+                .setParameter("firstName", "Max")
+                .getSingleResult();
+
+        assertThat(maxLastName).isEqualTo("Musterfrau");
+
+        Integer maxAge = entityManager.createQuery(
+                        "select p.age from Person p where p.firstName = :firstName",
+                        Integer.class)
+                .setParameter("firstName", "Max")
+                .getSingleResult();
+
+        assertThat(maxAge).isEqualTo(31);
+    }
+
+    @Test
+    void whereExpressionSupportsInAndNotInOperators() {
+        assertThat(customerRepository.findByEmail("in-a@test.de").orElseThrow().getStatus())
+                .isEqualTo(CustomerStatus.INACTIVE);
+        assertThat(customerRepository.findByEmail("in-b@test.de").orElseThrow().getStatus())
+                .isEqualTo(CustomerStatus.INACTIVE);
+        assertThat(customerRepository.findByEmail("in-c@test.de").orElseThrow().getStatus())
+                .isEqualTo(CustomerStatus.INACTIVE);
     }
 }

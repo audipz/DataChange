@@ -42,7 +42,7 @@ public class JpaOperationExecutor {
 
     private OperationOutcome insert(ChangeDefinition change, EntityManager entityManager, ExecutionContext context) {
         Object entity = instantiate(change.entity(), entityManager);
-        PropertyApplier.applyValues(entity, change.values(), context, objectMapper);
+        PropertyApplier.applyValues(entity, change.values(), context, objectMapper, entityManager);
         entityManager.persist(entity);
         OperationValueResolver.storeReference(change.saveAs(), entity, context);
         return OperationOutcome.INSERT;
@@ -55,7 +55,7 @@ public class JpaOperationExecutor {
         }
         long touched = 0;
         for (Object entity : entities) {
-            touched += PropertyApplier.applyValues(entity, change.set(), context, objectMapper);
+            touched += PropertyApplier.applyValues(entity, change.set(), context, objectMapper, entityManager);
         }
         return touched > 0 ? OperationOutcome.UPDATE : OperationOutcome.NONE;
     }
@@ -101,4 +101,3 @@ public class JpaOperationExecutor {
         return new WhereClauseParser().findByWhere(entity, where, entityManager);
     }
 }
-

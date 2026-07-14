@@ -36,6 +36,7 @@
 **Themen:**
 - GET `/datachange/changesets` – ChangeSet auflisten
 - POST `/datachange/execute?id=...` – ChangeSet ausführen
+- GET `/datachange/audit/changeset/{id}` – Ergebnis eines deployten ChangeSets abrufen
 - Fehlerbehandlung
 - Integration mit Monitoring (Prometheus)
 - ArgoCD/FluxCD Integration

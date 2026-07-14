@@ -1,0 +1,24 @@
+{
+  "specVersion": "1.0",
+  "id": "person-lookup-numeric-007",
+  "author": "example",
+  "description": "Copy a field using lookup() with numeric where value",
+  "labels": ["demo", "lookup"],
+  "tags": ["numeric", "cross-entity"],
+  "transactionMode": "CHANGESET",
+  "preConditions": {
+    "expression": "exists(Person where firstName='Erika')"
+  },
+  "changes": [
+    {
+      "id": "copy-lastname-by-age",
+      "op": "update",
+      "entity": "Person",
+      "where": "firstName == 'Max'",
+      "set": {
+        "lastName": "${lookup('Person','age',31,'lastName')}"
+      }
+    }
+  ]
+}
+

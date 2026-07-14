@@ -1,0 +1,24 @@
+{
+  "specVersion": "1.0",
+  "id": "person-lookup-complex-008",
+  "author": "example",
+  "description": "Use lookup() with an arbitrarily complex where expression",
+  "labels": ["demo", "lookup"],
+  "tags": ["complex", "boolean-logic"],
+  "transactionMode": "CHANGESET",
+  "preConditions": {
+    "expression": "exists(Person where firstName='Erika')"
+  },
+  "changes": [
+    {
+      "id": "copy-age-from-complex-lookup",
+      "op": "update",
+      "entity": "Person",
+      "where": "firstName == 'Max'",
+      "set": {
+        "age": "${lookup('Person',\"firstName == 'Erika' and age >= 30 and age <= 40 and (lastName != null)\",'age')}"
+      }
+    }
+  ]
+}
+

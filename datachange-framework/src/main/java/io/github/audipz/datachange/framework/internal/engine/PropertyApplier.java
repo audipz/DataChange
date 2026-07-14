@@ -2,6 +2,7 @@ package io.github.audipz.datachange.framework.internal.engine;
 
 import io.github.audipz.datachange.framework.api.ExecutionContext;
 import tools.jackson.databind.ObjectMapper;
+import jakarta.persistence.EntityManager;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
 
@@ -15,7 +16,13 @@ public final class PropertyApplier {
     private PropertyApplier() {
     }
 
-    public static long applyValues(Object entity, Map<String, Object> values, ExecutionContext context, ObjectMapper objectMapper) {
+    public static long applyValues(
+            Object entity,
+            Map<String, Object> values,
+            ExecutionContext context,
+            ObjectMapper objectMapper,
+            EntityManager entityManager
+    ) {
         if (values == null || values.isEmpty()) {
             return 0;
         }
@@ -23,7 +30,7 @@ public final class PropertyApplier {
         long touched = 0;
 
         for (Map.Entry<String, Object> entry : values.entrySet()) {
-            Object newValue = OperationValueResolver.resolveValue(entry.getValue(), context);
+            Object newValue = OperationValueResolver.resolveValue(entry.getValue(), context, entityManager);
             Object oldValue = wrapper.getPropertyValue(entry.getKey());
             Object converted = objectMapper.convertValue(newValue, wrapper.getPropertyType(entry.getKey()));
             if ((oldValue == null && converted != null) || (oldValue != null && !oldValue.equals(converted))) {
@@ -34,4 +41,3 @@ public final class PropertyApplier {
         return touched;
     }
 }
-
